@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:paeshoppingmall/screens/authen.dart';
+import 'package:paeshoppingmall/screens/my_service.dart';
 import 'package:paeshoppingmall/screens/register.dart';
 
 class Home extends StatefulWidget {
@@ -8,6 +11,21 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   //Method
+
+@override
+void iniState(){
+  super.initState();
+  checkStatus();
+}
+Future<void> checkStatus()async{
+
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  FirebaseUser firebaseUser = await firebaseAuth.currentUser();
+  if(firebaseUser !=null){
+    MaterialPageRoute materialPageRoute  = MaterialPageRoute(builder: (BuildContext context)=> MyService());
+    Navigator.of(context).pushAndRemoveUntil(materialPageRoute,(Route<dynamic> route)=>false);
+  }
+}
 
   Widget showLogo() {
     return Container(
@@ -47,7 +65,11 @@ class _HomeState extends State<Home> {
         'sign in',
         style: TextStyle(color: Colors.white),
       ),
-      onPressed: () {},
+      onPressed: () {
+          MaterialPageRoute materialPageRoute = MaterialPageRoute(builder: (BuildContext context)=> Authen());
+          Navigator.of(context).push(materialPageRoute);
+
+      },
     );
   }
 
@@ -60,6 +82,7 @@ class _HomeState extends State<Home> {
         Navigator.of(context).push(materialPageRoute);
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
